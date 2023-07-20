@@ -24,3 +24,26 @@ spec:
       containers:
       - name: mongodb
         image: techworldwithsiva/mongodb:k8
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb
+  namespace: roboshop
+  labels:
+    app: mongodb
+    tier: DB
+    project: roboshop
+spec:
+  selector:
+  # you should provide pod labels here
+    app: mongodb
+    tier: DB
+    project: roboshop
+  ports:
+  - name: mongo-port
+    protocol: TCP
+    # service port
+    port: 27017
+    # pod port
+    targetPort: 27017
