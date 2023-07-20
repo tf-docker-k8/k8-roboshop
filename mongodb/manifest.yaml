@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb
+  namespace: roboshop
+  labels:
+    app: mongodb
+    tier: DB
+    project: roboshop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+      tier: DB
+      project: roboshop
+  template:
+    metadata:
+      labels:
+        app: mongodb
+        tier: DB
+        project: roboshop
+    spec:
+      containers:
+      - name: mongodb
+        image: techworldwithsiva/mongodb:k8
