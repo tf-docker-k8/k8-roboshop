@@ -22,7 +22,7 @@ spec:
         project: roboshop
     spec:
       containers:
-      - name: mongodb
+      - name: catalogue
         image: techworldwithsiva/catalogue:k8
 ---
 apiVersion: v1
