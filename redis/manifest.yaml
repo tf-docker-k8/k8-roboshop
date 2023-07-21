@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: roboshop
+  labels:
+    app: redis
+    tier: DB
+    project: roboshop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+      tier: DB
+      project: roboshop
+  template:
+    metadata:
+      labels:
+        app: redis
+        tier: DB
+        project: roboshop
+    spec:
+      containers:
+      - name: redis
+        image: redis
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  namespace: roboshop
+  labels:
+    app: redis
+    tier: DB
+    project: roboshop
+spec:
+  selector:
+  # you should provide pod labels here
+    app: redis
+    tier: DB
+    project: roboshop
+  ports:
+  - name: redis-port
+    protocol: TCP
+    # service port
+    port: 6379
+    # pod port
+    targetPort: 6379
