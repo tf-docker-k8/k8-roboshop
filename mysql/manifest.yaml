@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-config
+data:
+  MYSQL_ALLOW_EMPTY_PASSWORD: yes
+  MYSQL_DATABASE: cities
+  MYSQL_USER: shipping
+  MYSQL_PASSWORD: secret
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  namespace: roboshop
+  labels:
+    app: mysql
+    tier: DB
+    project: roboshop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+      tier: DB
+      project: roboshop
+  template:
+    metadata:
+      labels:
+        app: mysql
+        tier: DB
+        project: roboshop
+    spec:
+      containers:
+      - name: mysql
+        image: techworldwithsiva/mysql:k8
+        envFrom:
+        - configMapRef:
+            name: mysql-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  namespace: roboshop
+  labels:
+    app: mysql
+    tier: DB
+    project: roboshop
+spec:
+  selector:
+  # you should provide pod labels here
+    app: mysql
+    tier: DB
+    project: roboshop
+  ports:
+  - name: mysql-port
+    protocol: TCP
+    # service port
+    port: 3306
+    # pod port
+    targetPort: 3306
