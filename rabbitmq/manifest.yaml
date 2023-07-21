@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq
+  namespace: roboshop
+  labels:
+    app: rabbitmq
+    tier: DB
+    project: roboshop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbitmq
+      tier: DB
+      project: roboshop
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+        tier: DB
+        project: roboshop
+    spec:
+      containers:
+      - name: rabbitmq
+        image: rabbitmq
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq
+  namespace: roboshop
+  labels:
+    app: rabbitmq
+    tier: DB
+    project: roboshop
+spec:
+  selector:
+  # you should provide pod labels here
+    app: rabbitmq
+    tier: DB
+    project: roboshop
+  ports:
+  - name: rabbitmq-amq
+    protocol: TCP
+    # service port
+    port: 5672
+    # pod port
+    targetPort: 5672
+  - name: rabbitmq-http
+    protocol: TCP
+    # service port
+    port: 15672
+    # pod port
+    targetPort: 15672
