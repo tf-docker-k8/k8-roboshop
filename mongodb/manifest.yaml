@@ -22,6 +22,8 @@ spec:
         project: roboshop
     spec:
       containers:
+      nodeSelector:
+        tier: DB
       - name: mongodb
         image: techworldwithsiva/mongodb:k8
 ---
